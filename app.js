@@ -16,7 +16,7 @@ function apply(){
  for(const id of ids)engine.setLayerTint(id,tint);
 }
 try{
- engine=await AtmosphereEngine.create({container:$('scene'),scene:{width:640,height:360,background:'#1c2426',fogDepth:35,rainDepth:60,layers:files.map((file,i)=>({id:ids[i],source:`./assets/runtime/${file}_640x360.png`,depth:i*10,scope:'world',receivesLightning:false}))},parameters:{timeOfDay:18.5,sky:{palette:'forest'},clouds:{enabled:false},life:{traffic:0,beacons:false,windowDrops:false}},onError:e=>{ $('status').hidden=false;$('status').textContent='Не удалось отрисовать сцену: '+e.message;}});
+ engine=await AtmosphereEngine.create({container:$('scene'),scene:{width:640,height:360,background:'#1c2426',fogDepth:35,rainDepth:60,layers:files.map((file,i)=>({id:ids[i],source:`./assets/runtime/${file}_640x360.png`,depth:1+i*10,scope:'world',receivesLightning:false}))},parameters:{timeOfDay:18.5,sky:{palette:'forest'},clouds:{enabled:false},life:{traffic:0,beacons:false,windowDrops:false}},onError:e=>{ $('status').hidden=false;$('status').textContent='Не удалось отрисовать сцену: '+e.message;}});
  $('status').remove();apply();engine.start();window.utash={engine};
  for(const id of ['time','cloud','fog','rain'])$(id).addEventListener('input',()=>{original=false;document.querySelectorAll('[data-preset]').forEach(b=>b.setAttribute('aria-pressed','false'));apply();});
  document.querySelectorAll('[data-preset]').forEach(b=>b.addEventListener('click',()=>{original=b.dataset.preset==='original';presets[b.dataset.preset].forEach((v,i)=>$( ['time','cloud','fog','rain'][i]).value=v);document.querySelectorAll('[data-preset]').forEach(el=>el.setAttribute('aria-pressed',String(el===b)));apply();}));
@@ -25,4 +25,5 @@ try{
  document.addEventListener('visibilitychange',()=>{if(document.hidden)engine.stop();else if(!paused)engine.start();});
 }catch(error){$('status').textContent='Для сцены нужен браузер с WebGL 2. '+error.message;document.querySelectorAll('.controls button,.controls input').forEach(el=>el.disabled=true);}
 $('fullscreen').onclick=async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else await document.querySelector('.landscape').requestFullscreen();}catch{ $('fullscreen').textContent='Полный экран недоступен';}};
+
 
