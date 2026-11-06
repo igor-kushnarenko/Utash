@@ -1,0 +1,12 @@
+export declare const vertex = "\nvarying vec2 vUv;\nvoid main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }\n";
+export declare const skyFragment: string;
+export declare const cloudFragment: string;
+export declare const imageFragment: string;
+export declare const roomFragment: string;
+export declare const lightFragment: string;
+export declare const fogFragment: string;
+export declare const layerAtmosphereFragment: string;
+export declare const rainFragment: string;
+export declare const trafficFragment: string;
+export declare const shutterFragment: string;
+export declare const outputFragment = "\nprecision highp float;\nvarying vec2 vUv;\nuniform sampler2D uFrame,uGlassMask;\nuniform vec2 uGlassResolution;\nuniform vec4 uDrops[32];\nuniform float uDropCount;\nuniform float uShutterEdge;\nvoid main(){\n  vec4 base=texture2D(uFrame,vUv);\n  if(texture2D(uGlassMask,vUv).r<0.5 || (1.0-vUv.y)*uGlassResolution.y<=uShutterEdge){gl_FragColor=base;return;}\n  vec2 pixel=floor(vUv*uGlassResolution)+0.5;\n  vec2 shift=vec2(0.0);float rim=0.0;\n  for(int i=0;i<32;i++){\n    if(float(i)>=uDropCount) break;\n    vec4 drop=uDrops[i];\n    vec2 delta=pixel-drop.xy;\n    vec2 size=vec2(drop.z,drop.z*(1.2+drop.w*0.015));\n    vec2 q=delta/size;float dist=dot(q,q);\n    if(dist<1.0){ shift=q*drop.z*0.65;rim=(step(0.65,dist)*0.1+step(0.88,dist)*0.06)*step(0.0,q.y);break; }\n    // A thin wet wake above each moving droplet.\n    if(abs(delta.x)<0.65 && delta.y>0.0 && delta.y<drop.w*0.25) shift=vec2(1.0,0.0);\n  }\n  vec2 uv=(floor(pixel+shift)+0.5)/uGlassResolution;\n  if(texture2D(uGlassMask,uv).r>0.5 && (1.0-uv.y)*uGlassResolution.y>uShutterEdge) base=texture2D(uFrame,uv);\n  gl_FragColor=vec4(base.rgb+rim,1.0);\n}\n";

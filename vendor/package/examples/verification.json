@@ -1,0 +1,25 @@
+{
+  "checks": {
+    "directionRight": true,
+    "receiverMask": true,
+    "foreground": true,
+    "noSelfOrCasterDarkening": true,
+    "alphaHoleTransmits": true,
+    "softPenumbra": true,
+    "directionFlips": true,
+    "maskExcludesProjectedShadow": true,
+    "hiddenCasterReleases": true,
+    "lowerSourceLonger": true,
+    "belowHorizonAmbientOnly": true,
+    "secondLightSurvives": true,
+    "pointProjection": true,
+    "raisingLampShortens": true,
+    "placementFollows": true,
+    "atomic": true,
+    "ownedState": true,
+    "disabledRestoresBase": true,
+    "serialization": true,
+    "roomPass": true
+  },
+  "errors": []
+}
